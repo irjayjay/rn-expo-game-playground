@@ -4,6 +4,10 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 ## Get started
 
+** NB: Probably obvious to most node devs: 
+- Always use NVM and always install like: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash`, not through npm or another method.
+- Never `sudo npm install -g...`, as sudo messes up your permissions, causing all sorts of other issues -- you'll have to uninstall and reinstall without sudo later.
+
 1. Install dependencies
 
    ```bash
@@ -14,6 +18,12 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
    ```bash
    npx expo start
+   ```
+
+   or maybe.. still testing:
+   ```
+      npx expo start -c
+      npx expo --web
    ```
 
 In the output, you'll find options to open the app in a

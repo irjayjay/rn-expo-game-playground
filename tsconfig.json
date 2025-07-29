@@ -1,10 +1,14 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "importHelpers": false,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "target": "es6",
     "strict": true,
     "paths": {
       "@/*": [
-        "./*"
+        "./*" // allow absolute path imports from root directory using @/directory/file
       ]
     }
   },
