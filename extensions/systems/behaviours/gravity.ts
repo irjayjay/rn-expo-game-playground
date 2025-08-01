@@ -1,6 +1,7 @@
 import { Behavior } from '@/extensions/types';
 import Matter from 'matter-js';
 
+/// Returns a function that applies grav force to the body it's added to.
 export const gravityBehavior = (
   gravityCenter: Matter.Vector,
   strength: number,

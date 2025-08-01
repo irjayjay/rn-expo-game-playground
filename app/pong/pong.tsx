@@ -12,9 +12,6 @@ const BALL_SIZE = 20;
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 20;
 
-// Shared type for any entity that has a Matter body and a renderer
-
-
 const BallStyle = (props: { size?: number, color?: string }) => {
     return {
         position: 'absolute',
@@ -25,12 +22,14 @@ const BallStyle = (props: { size?: number, color?: string }) => {
     }
 }
 
+// Generates the actual component rendered
 const BallRender = (props: { size: number, style?: {}, options?: Matter.IBodyDefinition }): React.FC<{ body: Matter.Body }> => ({ body }) => {
     const x = body.position.x - props.size / 2;
     const y = body.position.y - props.size / 2;
     return <View style={[props.style ?? styles.ball, { left: x, top: y }]} />;
 }
 
+// Internal entity we use to contain our object's data
 const BallEntity = (props: {
     size?: number,
     location?: { x: number, y: number },
@@ -64,7 +63,9 @@ const BallEntity = (props: {
     return { body: ball, renderer: BallRender({ size, style: { ...BallStyle({ size }), ...style } }) }
 }
 
+// Defining the ball.
 const ballInstance = BallEntity({ size: BALL_SIZE, location: { x: WIDTH / 2, y: HEIGHT / 2 } });
+// Defining the paddle.
 const paddleInstance = BallEntity({
     size: PADDLE_WIDTH,
     location: { x: WIDTH / 2, y: HEIGHT - 50 },
@@ -76,15 +77,7 @@ const paddleInstance = BallEntity({
     }
 });
 
-// const Paddle: React.FC<{ body: Matter.Body }> = ({ body }) => {
-//     const x = body.position.x - PADDLE_WIDTH / 2;
-//     const y = body.position.y - PADDLE_HEIGHT / 2;
-//     return <View style={[styles.paddle, { left: x, top: y }]} />;
-// };
-
-
 const SPEED = 4;
-
 
 export default function Pong() {
     const engine = useRef(Matter.Engine.create({ enableSleeping: false })).current;
@@ -95,20 +88,11 @@ export default function Pong() {
 
 
     Matter.Events.on(engine, 'beforeUpdate', function () {
-        // var bodies = Matter.Composite.allBodies(engine.world);
-
-        // for (var i = 0; i < bodies.length; i++) {
-        //     var body = bodies[i];
-
-        //     if (body.isStatic || body.isSleeping)
-        //         continue;
-
-        //     if (body.hasNoGravity)
-        //         body.force.y += body.mass * 0.001;
-        // }
+        // Keeping this to remind myself we have access to it.
     });
 
     React.useEffect(() => {
+        // Arrow key controls for the paddle
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'ArrowLeft' || e.key === 'a') movement.current = { x: -1, y: movement.current.y }
             if (e.key === 'ArrowRight' || e.key === 'd') movement.current = { x: 1, y: movement.current.y }
@@ -139,6 +123,7 @@ export default function Pong() {
         };
     }, []);
 
+    // Sets paddle position based on physics updates
     const physics = useCallback((entities: GameEntities, { time }: { time: { delta: number } }) => {
         const move = { x: movement.current.x * SPEED, y: movement.current.y * SPEED };
         // 
@@ -152,19 +137,6 @@ export default function Pong() {
         Matter.Engine.update(entities.physics.engine, time.delta);
         return entities;
     }, []);
-
-    // const ball = Matter.Bodies.circle(WIDTH / 2, HEIGHT / 2, BALL_SIZE / 2, {
-    //     restitution: 1,
-    //     frictionAir: 0,
-    //     friction: 0,
-    //     inertia: Infinity,
-    // });
-    // ball.hasNoGravity = true; // turn off gravity
-
-    // const paddle = Matter.Bodies.rectangle(WIDTH / 2, HEIGHT - 50, PADDLE_WIDTH, PADDLE_HEIGHT, {
-    //     isStatic: true,
-
-    // });
 
     const walls = [
         Matter.Bodies.rectangle(+10, HEIGHT / 2, 20, HEIGHT, { isStatic: true }), // Left
@@ -189,7 +161,7 @@ export default function Pong() {
     return (
         <View style={styles.container}
             {...panResponder.panHandlers}
-            // 👇 Required on web
+            // Required on web:
             onStartShouldSetResponder={() => true}
             onResponderMove={(e) => {
                 const x = e.nativeEvent.pageX;

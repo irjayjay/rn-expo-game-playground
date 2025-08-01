@@ -3,7 +3,8 @@ import { GameEngineUpdateEventOptionType } from 'react-native-game-engine';
 
 type EntityMap = Record<string, MatterEntity>;
 
-// Allows separate entities/Objects to have their own behaviors
+// Allows separate entities/Objects to have their own behaviors.
+// Loops through each entity and runs their behaviour functions attached to them.
 export const BehaviorSystem = (
     entities: EntityMap,
     { time }: GameEngineUpdateEventOptionType

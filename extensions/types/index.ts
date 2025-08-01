@@ -10,4 +10,5 @@ export type GameEntities = {
     paddle: MatterEntity
 };
 
+/// Behaviours are run during physics loop for each body.
 export type Behavior = (body: Matter.Body, delta: number, context: any) => void;
